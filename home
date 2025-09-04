@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang chủ</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      animation: fadeInDown 1.2s ease;
+    }
+    p {
+      font-size: 20px;
+      margin-bottom: 40px;
+      animation: fadeIn 2s ease;
+    }
+    .btn {
+      padding: 12px 28px;
+      background: white;
+      color: #0072ff;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      animation: fadeInUp 1.5s ease;
+    }
+    .btn:hover {
+      background: #0072ff;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Hiệu ứng bay của các vòng tròn */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      animation: float 8s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.2); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hiệu ứng vòng tròn bay -->
+  <div class="circle" style="width: 120px; height: 120px; top: 10%; left: 15%; animation-duration: 10s;"></div>
+  <div class="circle" style="width: 80px; height: 80px; top: 70%; left: 70%; animation-duration: 12s;"></div>
+  <div class="circle" style="width: 150px; height: 150px; top: 40%; left: 80%; animation-duration: 15s;"></div>
+  <div class="circle" style="width: 60px; height: 60px; top: 85%; left: 25%; animation-duration: 9s;"></div>
+
+  <!-- Nội dung chính -->
+  <h1>🎉 Chào mừng bạn!</h1>
+  <p>Bạn đã đăng nhập thành công. Đây là trang chủ demo cực xịn 🚀</p>
+  <button class="btn" onclick="logout()">Đăng xuất</button>
+
+  <script>
+    function logout() {
+      window.location.href = "login.html"; // Quay lại trang login
+    }
+  </script>
+</body>
+</html>
