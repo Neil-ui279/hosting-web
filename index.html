@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Luyện gõ tiếng Việt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f0f4f8;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #0077cc;
+    }
+    #text {
+      font-size: 18px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    #text span.correct { color: green; }
+    #text span.incorrect { color: red; }
+    #inputArea {
+      width: 100%;
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #0077cc;
+      outline: none;
+      margin-bottom: 20px;
+    }
+    #inputArea:focus {
+      border-color: #005999;
+    }
+    #result {
+      font-size: 16px;
+      font-weight: bold;
+      color: #444;
+      margin-bottom: 20px;
+    }
+    #restartBtn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #0077cc;
+      color: white;
+      cursor: pointer;
+    }
+    #restartBtn:hover {
+      background: #005999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Luyện gõ tiếng Việt</h1>
+  <div id="text"></div>
+  <textarea id="inputArea" rows="5" placeholder="Bắt đầu gõ tại đây..."></textarea>
+  <div id="result"></div>
+  <button id="restartBtn">🔄 Chơi lại</button>
+
+  <script>
+    const passages = [
+      "Học gõ bàn phím tiếng Việt giúp chúng ta tăng tốc độ và sự chính xác.",
+      "Luyện tập mỗi ngày là chìa khóa để thành công trong bất kỳ lĩnh vực nào.",
+      "Việc đọc sách thường xuyên sẽ mở rộng kiến thức và cải thiện kỹ năng viết.",
+      "Gõ mười ngón không chỉ nhanh hơn mà còn giúp giảm căng thẳng cho đôi tay."
+    ];
+
+    const textDiv = document.getElementById("text");
+    const inputArea = document.getElementById("inputArea");
+    const result = document.getElementById("result");
+    const restartBtn = document.getElementById("restartBtn");
+
+    let currentText = "";
+    let startTime = null;
+
+    function pickRandomText() {
+      return passages[Math.floor(Math.random() * passages.length)];
+    }
+
+    function displayText() {
+      textDiv.innerHTML = "";
+      currentText.split("").forEach(char => {
+        const span = document.createElement("span");
+        span.innerText = char;
+        textDiv.appendChild(span);
+      });
+    }
+
+    function resetGame() {
+      currentText = pickRandomText();
+      inputArea.value = "";
+      result.innerHTML = "";
+      startTime = null;
+      displayText();
+    }
+
+    inputArea.addEventListener("input", () => {
+      const input = inputArea.value;
+      const spans = textDiv.querySelectorAll("span");
+
+      if (!startTime) startTime = new Date();
+
+      let correctChars = 0;
+      for (let i = 0; i < spans.length; i++) {
+        const char = input[i];
+        if (char == null) {
+          spans[i].classList.remove("correct", "incorrect");
+        } else if (char === currentText[i]) {
+          spans[i].classList.add("correct");
+          spans[i].classList.remove("incorrect");
+          correctChars++;
+        } else {
+          spans[i].classList.add("incorrect");
+          spans[i].classList.remove("correct");
+        }
+      }
+
+      const accuracy = ((correctChars / input.length) * 100).toFixed(1);
+      const elapsedTime = (new Date() - startTime) / 1000 / 60; // phút
+      const wpm = Math.round((input.length / 5) / elapsedTime);
+
+      if (input === currentText) {
+        result.innerHTML = `<span class="correct">🎉 Hoàn thành! Độ chính xác: ${accuracy}%. Tốc độ: ${wpm} từ/phút.</span>`;
+      } else {
+        result.innerHTML = `Độ chính xác: <span class="${accuracy > 80 ? 'correct':'incorrect'}">${accuracy}%</span> | Tốc độ: ${wpm} từ/phút`;
+      }
+    });
+
+    restartBtn.addEventListener("click", resetGame);
+
+    // Khởi động game
+    resetGame();
+  </script>
+</body>
+</html>
