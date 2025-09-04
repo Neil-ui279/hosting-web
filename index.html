@@ -1,143 +1,181 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Luyện gõ tiếng Việt</title>
+  <title>Đăng nhập</title>
   <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background: #f0f4f8;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 350px;
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
       color: #333;
     }
-    h1 {
-      text-align: center;
-      color: #0077cc;
+    .input-box {
+      position: relative;
+      margin-bottom: 25px;
     }
-    #text {
-      font-size: 18px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-    #text span.correct { color: green; }
-    #text span.incorrect { color: red; }
-    #inputArea {
+    .input-box input {
       width: 100%;
-      font-size: 18px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 2px solid #0077cc;
+      padding: 14px 45px 14px 15px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
       outline: none;
-      margin-bottom: 20px;
-    }
-    #inputArea:focus {
-      border-color: #005999;
-    }
-    #result {
+      transition: 0.3s;
       font-size: 16px;
-      font-weight: bold;
-      color: #444;
-      margin-bottom: 20px;
+      background: transparent;
     }
-    #restartBtn {
-      display: inline-block;
-      padding: 10px 20px;
+    .input-box label {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #999;
       font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #0077cc;
-      color: white;
+      pointer-events: none;
+      transition: 0.3s;
+      background: white;
+      padding: 0 5px;
+    }
+    .input-box input:focus,
+    .input-box input:not(:placeholder-shown) {
+      border-color: #667eea;
+      box-shadow: 0 0 8px rgba(102,126,234,0.3);
+    }
+    .input-box input:focus ~ label,
+    .input-box input:not(:placeholder-shown) ~ label {
+      top: -8px;
+      left: 12px;
+      font-size: 13px;
+      color: #667eea;
+    }
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
       cursor: pointer;
+      font-size: 18px;
+      color: #666;
     }
-    #restartBtn:hover {
-      background: #005999;
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn:hover:not(.loading) {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .btn.loading {
+      cursor: wait;
+      opacity: 0.8;
+    }
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .extra {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+    .extra a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .extra a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>Luyện gõ tiếng Việt</h1>
-  <div id="text"></div>
-  <textarea id="inputArea" rows="5" placeholder="Bắt đầu gõ tại đây..."></textarea>
-  <div id="result"></div>
-  <button id="restartBtn">🔄 Chơi lại</button>
+  <div class="login-box">
+    <h2>Đăng nhập</h2>
+    <form onsubmit="return handleLogin(event)">
+      <div class="input-box">
+        <input type="text" id="username" required placeholder=" ">
+        <label for="username">Tên đăng nhập</label>
+      </div>
+      <div class="input-box">
+        <input type="password" id="password" required placeholder=" ">
+        <label for="password">Mật khẩu</label>
+        <span class="toggle-password" onclick="togglePassword()">👁</span>
+      </div>
+      <button type="submit" id="loginBtn" class="btn">Đăng nhập</button>
+      <div class="extra">
+        <p><a href="#">Quên mật khẩu?</a></p>
+        <p>Chưa có tài khoản? <a href="#">Đăng ký</a></p>
+      </div>
+    </form>
+  </div>
 
   <script>
-    const passages = [
-      "Học gõ bàn phím tiếng Việt giúp chúng ta tăng tốc độ và sự chính xác.",
-      "Luyện tập mỗi ngày là chìa khóa để thành công trong bất kỳ lĩnh vực nào.",
-      "Việc đọc sách thường xuyên sẽ mở rộng kiến thức và cải thiện kỹ năng viết.",
-      "Gõ mười ngón không chỉ nhanh hơn mà còn giúp giảm căng thẳng cho đôi tay."
-    ];
-
-    const textDiv = document.getElementById("text");
-    const inputArea = document.getElementById("inputArea");
-    const result = document.getElementById("result");
-    const restartBtn = document.getElementById("restartBtn");
-
-    let currentText = "";
-    let startTime = null;
-
-    function pickRandomText() {
-      return passages[Math.floor(Math.random() * passages.length)];
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      pwd.type = (pwd.type === "password") ? "text" : "password";
     }
 
-    function displayText() {
-      textDiv.innerHTML = "";
-      currentText.split("").forEach(char => {
-        const span = document.createElement("span");
-        span.innerText = char;
-        textDiv.appendChild(span);
-      });
+    function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById("loginBtn");
+      btn.classList.add("loading");
+      btn.innerHTML = '<div class="spinner"></div>';
+
+      // Giả lập xử lý đăng nhập
+      setTimeout(() => {
+        btn.classList.remove("loading");
+        btn.innerHTML = "✅ Thành công";
+        btn.style.background = "linear-gradient(135deg, #00b09b, #96c93d)";
+
+        // Redirect sau 2 giây
+        setTimeout(() => {
+          window.location.href = "home.html"; // Thay bằng link bạn muốn
+        }, 2000);
+
+      }, 3000);
     }
-
-    function resetGame() {
-      currentText = pickRandomText();
-      inputArea.value = "";
-      result.innerHTML = "";
-      startTime = null;
-      displayText();
-    }
-
-    inputArea.addEventListener("input", () => {
-      const input = inputArea.value;
-      const spans = textDiv.querySelectorAll("span");
-
-      if (!startTime) startTime = new Date();
-
-      let correctChars = 0;
-      for (let i = 0; i < spans.length; i++) {
-        const char = input[i];
-        if (char == null) {
-          spans[i].classList.remove("correct", "incorrect");
-        } else if (char === currentText[i]) {
-          spans[i].classList.add("correct");
-          spans[i].classList.remove("incorrect");
-          correctChars++;
-        } else {
-          spans[i].classList.add("incorrect");
-          spans[i].classList.remove("correct");
-        }
-      }
-
-      const accuracy = ((correctChars / input.length) * 100).toFixed(1);
-      const elapsedTime = (new Date() - startTime) / 1000 / 60; // phút
-      const wpm = Math.round((input.length / 5) / elapsedTime);
-
-      if (input === currentText) {
-        result.innerHTML = `<span class="correct">🎉 Hoàn thành! Độ chính xác: ${accuracy}%. Tốc độ: ${wpm} từ/phút.</span>`;
-      } else {
-        result.innerHTML = `Độ chính xác: <span class="${accuracy > 80 ? 'correct':'incorrect'}">${accuracy}%</span> | Tốc độ: ${wpm} từ/phút`;
-      }
-    });
-
-    restartBtn.addEventListener("click", resetGame);
-
-    // Khởi động game
-    resetGame();
   </script>
 </body>
 </html>
